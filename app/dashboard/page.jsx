@@ -26,28 +26,34 @@ export default function Page() {
     // Add more demo data objects as needed
   ];
   return (
-    <div className="flex items-center flex-col justify-center p-24">
-      <LinkCopy linkAddress="https://demosite.com" />
-      <div className="overflow-x-auto">
-        <table className="table-auto min-w-full border">
-          <thead>
-            <tr>
-              <th className="px-4 border py-2">User Agent</th>
-              <th className="px-4 border py-2">Email</th>
-              <th className="px-4 border py-2">Password</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={index}>
-                <td className="border px-4 py-2">{item.userAgent}</td>
-                <td className="border px-4 py-2">{item.email}</td>
-                <td className="border px-4 py-2">{item.password}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <>
+      <div className="flex items-center flex-col justify-center ">
+        <div className="w-full">
+          <LinkCopy linkAddress="https://demosite.com" />
+        </div>
+        <div className="w-full sm:w-2/3">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="px-4 border py-2">User Agent</th>
+                  <th className="px-4 border py-2">Email</th>
+                  <th className="px-4 border py-2">Password</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((item, index) => (
+                  <tr key={index}>
+                    <td className="border px-4 py-2">{item.userAgent}</td>
+                    <td className="border px-4 py-2">{item.email}</td>
+                    <td className="border px-4 py-2">{item.password}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

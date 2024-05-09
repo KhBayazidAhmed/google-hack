@@ -16,7 +16,7 @@ export default function LinkCopy({ linkAddress }) {
   const { toast } = useToast();
 
   return (
-    <div className="flex items-center py-4">
+    <div className="flex items-center justify-center py-4">
       <span
         className="text-sm cursor-pointer flex items-center gap-5 font-medium border p-4"
         onClick={() => {
