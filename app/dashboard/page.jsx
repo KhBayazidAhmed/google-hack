@@ -1,9 +1,26 @@
-import Image from "next/image";
-import DataTable from "@/components/DataTable";
+"use client";
 import LinkCopy from "@/components/LinkCopy";
+import Navbar from "@/components/Navbar";
+import { authCheck } from "@/actions";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 export default function Page() {
-  // Usage
+  const [userName, setUserName] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  async function authChecker() {
+    setIsLoading(true);
+    const auth = await authCheck();
+    if (auth) {
+      setUserName(JSON.parse(auth)?.username);
+    }
+    console.log("auth checker");
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    authChecker();
+  }, []);
   const data = [
     {
       userAgent:
@@ -27,6 +44,7 @@ export default function Page() {
   ];
   return (
     <>
+      <Navbar userName={userName} isLoading={isLoading} />
       <div className="flex items-center flex-col justify-center ">
         <div className="w-full">
           <LinkCopy linkAddress="https://demosite.com" />

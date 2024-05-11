@@ -1,8 +1,17 @@
 import { NextResponse } from "next/server";
+import { decrypt } from "./lib/auth";
 
-export function middleware(request) {
+export async function middleware(request) {
   // return NextResponse.redirect(new URL("/home", request.url));
-  console.log("middleware run ");
+  let token = request.cookies.get("token");
+  if (!token) {
+    return NextResponse.redirect(new URL("/log-in", request.url));
+  }
+
+  let payload = await decrypt(token.value);
+  if (!payload) {
+    return NextResponse.redirect(new URL("/log-in", request.url));
+  }
 }
 
 // See "Matching Paths" below to learn more
