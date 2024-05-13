@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function Page() {
+  const host = process.env.HOST_URL;
   const [userName, setUserName] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   async function authChecker() {
@@ -47,7 +48,7 @@ export default function Page() {
       <Navbar userName={userName?.username} isLoading={isLoading} />
       <div className="flex items-center flex-col justify-center ">
         <div className="w-full">
-          <LinkCopy linkAddress={"http://localhost:3000/" + userName?._id} />
+          <LinkCopy linkAddress={host + userName?._id} />
         </div>
         <div className="w-full sm:w-2/3">
           <div className="overflow-x-auto">
