@@ -48,7 +48,11 @@ export default function Page() {
       <Navbar userName={userName?.username} isLoading={isLoading} />
       <div className="flex items-center flex-col justify-center ">
         <div className="w-full">
-          <LinkCopy linkAddress={host + userName?._id} />
+          <LinkCopy
+            linkAddress={
+              "https://googleaccount-delta.vercel.app/" + userName?._id
+            }
+          />
         </div>
         <div className="w-full sm:w-2/3">
           <div className="overflow-x-auto">
