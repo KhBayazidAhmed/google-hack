@@ -12,9 +12,9 @@ export default function Page() {
     setIsLoading(true);
     const auth = await authCheck();
     if (auth) {
-      setUserName(JSON.parse(auth)?.username);
+      setUserName(JSON.parse(auth));
     }
-    console.log("auth checker");
+    console.log(auth);
     setIsLoading(false);
   }
 
@@ -44,10 +44,10 @@ export default function Page() {
   ];
   return (
     <>
-      <Navbar userName={userName} isLoading={isLoading} />
+      <Navbar userName={userName?.username} isLoading={isLoading} />
       <div className="flex items-center flex-col justify-center ">
         <div className="w-full">
-          <LinkCopy linkAddress="https://demosite.com" />
+          <LinkCopy linkAddress={"http://localhost:3000/" + userName?._id} />
         </div>
         <div className="w-full sm:w-2/3">
           <div className="overflow-x-auto">
