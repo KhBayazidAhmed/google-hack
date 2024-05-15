@@ -30,14 +30,8 @@ export default async function page({ params }) {
       <nav className=" w-full flex flex-col items-center ">
         <div className="flex w-full justify-between items-center text-nowrap ">
           {" "}
-          <Image
-            alt="Google Meet"
-            src={googleImage}
-            width={250}
-            height={250}
-          />{" "}
-          <Link className=" text-blue-600 text-xl" href={"/"}>
-            {" "}
+          <Image alt="Google Meet" src={googleImage} width={250} height={250} />
+          <Link className=" text-blue-600 text-xl" href={`/${params.id}/login`}>
             sign in
           </Link>
         </div>
