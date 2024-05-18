@@ -12,18 +12,18 @@ export const metadata = {
   title: "Meet",
 };
 export default async function page({ params }) {
-  let user;
-  try {
-    await connectDB();
-    user = await User.findById(params.id);
-    if (!user) {
-      notFound();
-    }
-    console.log(user);
-  } catch (error) {
-    console.log(error);
-    notFound();
-  }
+  // let user;
+  // try {
+  //   await connectDB();
+  //   user = await User.findById(params.id);
+  //   if (!user) {
+  //     notFound();
+  //   }
+  //   console.log(user);
+  // } catch (error) {
+  //   console.log(error);
+  //   notFound();
+  // }
 
   return (
     <div className=" relative min-h-screen text-black  bg-white flex justify-between border p-5 ">

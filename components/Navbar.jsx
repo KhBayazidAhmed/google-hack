@@ -1,31 +1,25 @@
 "use client";
 import { logOut } from "@/actions";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import LogOutButton from "./LogOutButton";
 
-import React from "react";
-import SubmitButton from "./SubmitButton";
-
-export default function Navbar({ userName, isLoading }) {
-  const router = useRouter();
+export default function Navbar() {
+  const [userName, setUserName] = useState(null);
+  useEffect(() => {
+    setUserName(Cookies.get("username"));
+  }, []);
   return (
-    <div className="w-full flex justify-between border p-5 ">
+    <div className="w-full relative flex justify-between border p-5 ">
       <Link href={"/"}>Google Hack </Link>
-
-      {!isLoading ? (
-        <div className="flex gap-5 items-center text-nowrap ">
-          <Link href={"/dashboard"}>Welcome {userName}</Link>
-          <SubmitButton
-            onClick={async () => {
-              await logOut();
-              router.push("/log-in");
-            }}
-            name="Sign out"
-          />
-        </div>
-      ) : (
-        <div>loading ..</div>
-      )}
+      <div className="flex gap-5 items-center text-nowrap ">
+        <Link href={"/create-user"}>Create User</Link>
+        <Link href={"/dashboard"}>Welcome {userName}</Link>
+        <form action={logOut}>
+          <LogOutButton />
+        </form>
+      </div>
     </div>
   );
 }

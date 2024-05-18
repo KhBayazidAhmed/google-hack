@@ -1,10 +1,12 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { Button } from "./ui/button";
 import { LuClipboardCheck } from "react-icons/lu";
+import { getUserLinks } from "@/actions";
 
-export default function LinkCopy({ linkAddress }) {
+export default function LinkCopy() {
+  const [linkAddress, setLinkAddress] = useState(null);
+  const [loading, setLoading] = useState(true);
   function copyToClipboard(text) {
     var input = document.createElement("input");
     input.value = text;
@@ -13,8 +15,18 @@ export default function LinkCopy({ linkAddress }) {
     document.execCommand("copy");
     document.body.removeChild(input);
   }
+  async function getLink() {
+    let id = await getUserLinks();
+    if (id) {
+      id = JSON.parse(id);
+    }
+    setLinkAddress(`${window.location.origin}/${id}`);
+    setLoading(false);
+  }
   const { toast } = useToast();
-
+  useEffect(() => {
+    getLink();
+  });
   return (
     <div className="flex items-center justify-center py-4">
       <span
@@ -26,7 +38,7 @@ export default function LinkCopy({ linkAddress }) {
           copyToClipboard(linkAddress);
         }}
       >
-        {linkAddress}
+        {loading ? "loading..." : linkAddress}
         <span>
           <LuClipboardCheck />
         </span>

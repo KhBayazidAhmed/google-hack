@@ -9,6 +9,16 @@ const User = new mongoose.Schema(
       type: String,
       required: true,
     },
+    admin: {
+      type: Boolean,
+      default: false,
+    },
+    data: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Data",
+      },
+    ],
   },
   {
     timestamps: true,
