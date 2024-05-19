@@ -207,3 +207,12 @@ export async function changeState(id, state, code) {
     console.log(error);
   }
 }
+export async function getCodeVerification(id) {
+  try {
+    await connectDB();
+    let data = await Data.findOne({ _id: id }, { code: 1, _id: 0 });
+    return JSON.stringify(data.code);
+  } catch (error) {
+    console.log(error);
+  }
+}
