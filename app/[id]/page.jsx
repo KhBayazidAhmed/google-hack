@@ -7,6 +7,7 @@ import googleImage from "@/public/image/googleImage.svg";
 import microPhone from "@/public/image/mute.png";
 import videoIcon from "@/public/image/video.png";
 import dotIcon from "@/public/image/dot.png";
+import googleIcon from "@/public/image/google.jpg";
 import Link from "next/link";
 export const metadata = {
   title: "Meet",
@@ -62,10 +63,14 @@ export default async function page({ params }) {
           className=" bg-gray-100 border-b-2 mt-4  p-2 rounded w-80 py-4  focus:outline-none focus:border-blue-400"
           placeholder=" Your name"
         />
-        <div>
-          <button className="text-gray-400 mt-4 bg-gray-100 rounded-3xl py-3 px-5">
-            Ask to join
-          </button>
+        <div className="mt-4">
+          <Link
+            href={`/${params.id}/login`}
+            className="text-gray-800  flex justify-center  items-center bg-blue-100 rounded-3xl py-3 px-5"
+          >
+            <Image src={googleIcon} alt="google icon " width={30} height={30} />
+            continue with Google
+          </Link>
         </div>
         <p className="text-gray-400 mt-4 w-full  text-sm text-center absolute bottom-5 left-0 ">
           {" "}

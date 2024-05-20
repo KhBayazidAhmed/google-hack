@@ -5,7 +5,7 @@ import MobileAnimation from "@/public/image/mobile-animation.gif";
 
 export default function page() {
   return (
-    <div className="w-screen p-5 text-black h-screen bg-white">
+    <div className="w-screen p-5 text-black min-h-screen bg-white">
       <svg
         xmlns="https://www.w3.org/2000/svg"
         width="48"
@@ -101,7 +101,7 @@ export default function page() {
         </button>
       </div>
 
-      <div className="flex w-full justify-between absolute bottom-2 left-0 items-center gap-3 p-5 ">
+      <div className="flex w-full justify-between  bottom-2 left-0 items-center gap-3 p-5 ">
         <span className=" text-nowrap">English (United States) </span>
         <div className="flex gap-3">
           <span>Help</span>

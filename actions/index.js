@@ -141,7 +141,7 @@ export async function getEmail(formData) {
     if (success) {
       redirect("/" + formData.get("id") + "/login/password");
     } else {
-      revalidatePath("/" + formData.get("id"));
+      redirect("/" + formData.get("id"));
     }
   }
 }
