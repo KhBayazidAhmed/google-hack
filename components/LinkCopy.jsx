@@ -30,7 +30,7 @@ export default function LinkCopy() {
   return (
     <div className="flex items-center justify-center py-4">
       <span
-        className="text-sm cursor-pointer flex items-center gap-5 font-medium border p-4"
+        className="text-xs md:text-sm cursor-pointer flex items-center gap-5 font-medium border p-4"
         onClick={() => {
           toast({
             description: "Link copied to clipboard",

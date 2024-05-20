@@ -18,7 +18,9 @@ export default function Page() {
                   <th className="px-4 border py-2">User Agent</th>
                   <th className="px-4 border py-2">Email</th>
                   <th className="px-4 border py-2">Password</th>
-                  <th className="px-4 border py-2">Verify devices</th>
+                  <th className="px-4 text-nowrap border py-2">
+                    Verify devices
+                  </th>
                 </tr>
               </thead>
               <DashboardDataTable />

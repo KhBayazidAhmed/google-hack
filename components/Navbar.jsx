@@ -11,8 +11,10 @@ export default function Navbar() {
     setUserName(Cookies.get("username"));
   }, []);
   return (
-    <div className="w-full relative flex justify-between border p-5 ">
-      <Link href={"/"}>Google Hack </Link>
+    <div className="w-full justify-center relative flex md:justify-between border p-5 ">
+      <Link className="hidden md:flex" href={"/"}>
+        Google Hack{" "}
+      </Link>
       <div className="flex gap-5 items-center text-nowrap ">
         <Link href={"/create-user"}>Create User</Link>
         <Link href={"/dashboard"}>Welcome {userName}</Link>

