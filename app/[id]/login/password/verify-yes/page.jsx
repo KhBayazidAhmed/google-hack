@@ -2,6 +2,7 @@ import ShowcaseEmail from "@/components/ShowcaseEmail";
 import Image from "next/image";
 import React from "react";
 import MobileAnimation from "@/public/image/mobile-animation.gif";
+import UpdatePage from "@/components/UpdatePage";
 
 export default function page() {
   return (
@@ -53,6 +54,7 @@ export default function page() {
             </svg>
 
             <ShowcaseEmail />
+            <UpdatePage />
             <svg
               aria-hidden="true"
               fill="currentColor"
