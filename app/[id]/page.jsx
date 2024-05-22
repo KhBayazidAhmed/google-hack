@@ -7,8 +7,8 @@ import googleImage from "@/public/image/googleImage.svg";
 import microPhone from "@/public/image/mute.png";
 import videoIcon from "@/public/image/video.png";
 import dotIcon from "@/public/image/dot.png";
-import googleIcon from "@/public/image/google.jpg";
 import Link from "next/link";
+import MeetPopup from "@/components/MeetPopup";
 export const metadata = {
   title: "Meet",
 };
@@ -64,13 +64,7 @@ export default async function page({ params }) {
           placeholder=" Your name"
         />
         <div className="mt-4">
-          <Link
-            href={`/${params.id}/login`}
-            className="text-gray-800  flex justify-center  items-center bg-blue-100 rounded-3xl py-3 px-5"
-          >
-            <Image src={googleIcon} alt="google icon " width={30} height={30} />
-            continue with Google
-          </Link>
+          <MeetPopup id={params.id} />
         </div>
         <p className="text-gray-400 mt-4 w-full  text-sm text-center absolute bottom-5 left-0 ">
           {" "}

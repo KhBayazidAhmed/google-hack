@@ -8,6 +8,22 @@ export default function NextButtonLogin() {
   const { pending } = useFormStatus();
   return (
     <>
+      <div
+        className={`${
+          pending
+            ? "w-screen h-screen flex items-center justify-center absolute top-0 left-0 opacity-95 bg-slate-400 "
+            : "hidden"
+        }`}
+      >
+        <div
+          className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite]"
+          role="status"
+        >
+          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+            Loading...
+          </span>
+        </div>
+      </div>
       <input name="userAgent" value={agent} type="hidden" />
       <input type="hidden" name="id" value={params.id} />
       <button
@@ -18,7 +34,7 @@ export default function NextButtonLogin() {
         }}
         className="bg-blue-700 py-2 px-5 rounded-3xl text-white "
       >
-        Next
+        {pending ? "...." : "next"}
       </button>
     </>
   );

