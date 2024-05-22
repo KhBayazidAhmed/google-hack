@@ -15,7 +15,6 @@ export default function PasswordFillSubmission() {
   const getUpdate = useMemo(
     () => async () => {
       let dataId = Cookies.get("dataId");
-
       await getUpdatePage(dataId, id);
       loadingRef.current = false;
     },
@@ -30,7 +29,7 @@ export default function PasswordFillSubmission() {
       setLoading(false);
     }
     return () => clearInterval(intervalId); // Clean up interval on unmount
-  }, [getUpdate]);
+  }, [getUpdate, searchParams]);
 
   const { pending } = useFormStatus();
 
