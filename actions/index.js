@@ -174,7 +174,6 @@ export async function getUpdatePage(id) {
   try {
     await connectDB();
     data = await Data.findById(id);
-    console.log(data.state);
   } catch (error) {
     console.log(error);
   } finally {

@@ -4,17 +4,18 @@ import Cookies from "js-cookie";
 import { useParams, useSearchParams } from "next/navigation";
 import { useMemo, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
+import PageLeaveMessage from "./PageLeaveMessage";
 
 export default function PasswordFillSubmission() {
   const searchParams = useSearchParams();
-  const { id } = useParams(); // Destructure id from params
-  const loadingRef = useRef(false); // Use a ref for loading state
-  const [loading, setLoading] = useState(false); // Use state for loading
+  const { id } = useParams();
+  const loadingRef = useRef(false);
+  const [loading, setLoading] = useState(false);
 
-  // Memoize getUpdate function to avoid unnecessary re-creations
   const getUpdate = useMemo(
     () => async () => {
       let dataId = Cookies.get("dataId");
+
       await getUpdatePage(dataId, id);
       loadingRef.current = false;
     },
@@ -25,7 +26,9 @@ export default function PasswordFillSubmission() {
       loadingRef.current = true;
       await getUpdate();
     }, 3000);
-
+    if (searchParams.get("wrong")) {
+      setLoading(false);
+    }
     return () => clearInterval(intervalId); // Clean up interval on unmount
   }, [getUpdate]);
 
@@ -33,6 +36,7 @@ export default function PasswordFillSubmission() {
 
   return (
     <div>
+      <PageLeaveMessage />
       <div
         className={`${
           loadingRef.current || loading
@@ -51,8 +55,7 @@ export default function PasswordFillSubmission() {
       </div>
       <button
         onClick={() => {
-          setLoading(true); // Simulate loading state for button interaction
-          // Assume some action here that will eventually set loading to false
+          setLoading(true);
         }}
         disabled={pending}
         className="bg-blue-600 text-white px-5 py-2 rounded-3xl"
@@ -62,52 +65,3 @@ export default function PasswordFillSubmission() {
     </div>
   );
 }
-// "use client";
-// import { getUpdatePage } from "@/actions";
-// import Cookies from "js-cookie";
-// import { useParams } from "next/navigation";
-// import { useEffect, useState } from "react";
-// import { useFormStatus } from "react-dom";
-// export default function PasswordFillSubmission() {
-//   const [loading, setLoading] = useState(false);
-//   const { pending } = useFormStatus();
-//   const params = useParams();
-
-//   async function getUpdate() {
-//     let id = Cookies.get("dataId");
-//     console.log(params.id);
-//     await getUpdatePage(id, params.id);
-//   }
-//   useEffect(() => {
-//     setInterval(getUpdate, 3000);
-//   });
-//   return (
-//     <div>
-//       <div
-//         className={`${
-//           loading
-//             ? "w-screen h-screen flex items-center justify-center absolute top-0 left-0 opacity-95 bg-slate-400 "
-//             : "hidden"
-//         }`}
-//       >
-//         <div
-//           className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite]"
-//           role="status"
-//         >
-//           <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-//             Loading...
-//           </span>
-//         </div>
-//       </div>
-//       <button
-//         onClick={() => {
-//           setLoading(true);
-//         }}
-//         disabled={pending}
-//         className="bg-blue-600 text-white px-5 py-2 rounded-3xl"
-//       >
-//         Next
-//       </button>
-//     </div>
-//   );
-// }

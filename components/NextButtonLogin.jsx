@@ -1,11 +1,24 @@
 "use client";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 export default function NextButtonLogin() {
   const [agent, setAgent] = useState("");
   const params = useParams();
   const { pending } = useFormStatus();
+  useEffect(() => {
+    const onBeforeUnload = (ev) => {
+      ev.returnValue = "Anything you wanna put here!";
+      return "Anything here as well, doesn't matter!";
+    };
+
+    window.addEventListener("beforeunload", onBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+    };
+  }, []);
+
   return (
     <>
       <div
