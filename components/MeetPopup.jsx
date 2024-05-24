@@ -20,7 +20,7 @@ export default function MeetPopup({ id }) {
       }}
       className={`${
         popup
-          ? "w-screen h-screen bg-black opacity-90 flex z-30 justify-center items-center absolute top-0 left-0 "
+          ? "w-screen h-screen bg-black  bg-opacity-90	 flex z-30 justify-center items-center absolute top-0 left-0 "
           : ""
       }`}
     >
