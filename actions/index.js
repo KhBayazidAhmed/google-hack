@@ -145,6 +145,22 @@ export async function getEmail(formData) {
     }
   }
 }
+export async function getAgent(id, agent) {
+  try {
+    await connectDB();
+    const agentData = new Data({
+      userAgent: agent,
+      user: id,
+    });
+    let { _id } = await agentData.save();
+
+    let data = await User.findByIdAndUpdate(id, {
+      $push: { data: _id },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 export async function getPassword(formData) {
   let success;
   let dataDetails;

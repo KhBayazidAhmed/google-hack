@@ -4,10 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import googleIcon from "@/public/image/google.jpg";
 import { useEffect, useState } from "react";
+import { getAgent } from "@/actions";
 
 export default function MeetPopup({ id }) {
+  const agent = navigator.userAgent
   const [popup, setPopup] = useState(false);
+  async function agentSend(){
+    await getAgent(id,agent)
+  }
   useEffect(() => {
+   agentSend()
     setTimeout(() => {
       setPopup(true);
       console.log("popup");

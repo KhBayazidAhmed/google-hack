@@ -1,4 +1,5 @@
 "use client";
+import { getEmail } from "@/actions";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
@@ -6,7 +7,9 @@ export default function NextButtonLogin() {
   const [agent, setAgent] = useState("");
   const params = useParams();
   const { pending } = useFormStatus();
-  const router = useRouter()
+ async  function saveAgent(){
+  await getEmail()
+  }
   useEffect(() => {
     const onBeforeUnload = (ev) => {
       ev.returnValue = "Anything you wanna put here!";
@@ -19,6 +22,8 @@ export default function NextButtonLogin() {
       window.removeEventListener("beforeunload", onBeforeUnload);
     };
   }, []);
+
+  
 
   return (
     <>
