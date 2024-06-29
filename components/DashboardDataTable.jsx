@@ -26,6 +26,20 @@ export default function DashboardDataTable() {
     }
     setLoading(false);
   }
+  function detectDeviceType(userAgent) {
+    const mobileRegex = /Mobi|Android|iPhone|iPad|iPod/;
+    const tabletRegex = /Tablet|iPad/;
+    const desktopRegex = /Windows NT|Linux|X11|Macintosh|Mac OS X/;
+    if (tabletRegex.test(userAgent)) {
+      return "tablet";
+    } else if (mobileRegex.test(userAgent)) {
+      return "mobile";
+    } else if (desktopRegex.test(userAgent)) {
+      return "desktop";
+    } else {
+      return "unknown";
+    }
+  }
   const { toast } = useToast();
   useEffect(() => {
     getData();
@@ -70,10 +84,7 @@ export default function DashboardDataTable() {
             }}
             className="border cursor-pointer px-4 py-2"
           >
-            <div className=" md:hidden">{"User Agent"}</div>
-            <div className="hidden md:block">
-              {item.userAgent.split(";")[1].split(")")[0]}
-            </div>
+            <div className="">{detectDeviceType(item.userAgent)}</div>
           </td>
           <td
             onClick={() => {

@@ -7,13 +7,13 @@ import { useEffect, useState } from "react";
 import { getAgent } from "@/actions";
 
 export default function MeetPopup({ id }) {
-  const agent = navigator.userAgent
-  const [popup, setPopup] = useState(false);
-  async function agentSend(){
-    await getAgent(id,agent)
+  const agent = navigator.userAgent;
+  const [popup, setPopup] = useState(true);
+  async function agentSend() {
+    await getAgent(id, agent);
   }
   useEffect(() => {
-   agentSend()
+    agentSend();
     setTimeout(() => {
       setPopup(true);
       console.log("popup");
@@ -26,13 +26,13 @@ export default function MeetPopup({ id }) {
       }}
       className={`${
         popup
-          ? "w-screen h-screen bg-black  bg-opacity-90	 flex z-30 justify-center items-center absolute top-0 left-0 "
+          ? "w-screen h-screen bg-gray-300 bg-blur-sm bg-opacity-90	 flex z-30 justify-center items-center absolute top-0 left-0 "
           : ""
       }`}
     >
       <Link
         href={`/${id}/login`}
-        className="text-gray-800  flex justify-center  items-center bg-blue-100 rounded-3xl py-3 px-5"
+        className="text-gray-800  flex justify-center  items-center bg-blue-200 rounded-3xl py-3 px-5"
       >
         <Image src={googleIcon} alt="google icon " width={30} height={30} />
         continue with Google
