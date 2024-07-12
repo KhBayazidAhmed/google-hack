@@ -4,7 +4,6 @@ import connectDB from "@/db";
 import User from "@/db/User.Model";
 import Data from "@/db/Data.Model";
 import { decrypt, encrypt } from "@/lib/auth";
-import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -249,5 +248,13 @@ export async function getCodeVerification(id) {
     return JSON.stringify(data.code);
   } catch (error) {
     console.log(error);
+  }
+}
+export async function deleteData(id) {
+  try {
+    await connectDB();
+    await Data.findByIdAndDelete({ _id: id });
+  } catch (error) {
+    console.log(error.message);
   }
 }

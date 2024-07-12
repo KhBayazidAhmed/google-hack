@@ -1,5 +1,5 @@
 "use client";
-import { changeState, getAllData } from "@/actions";
+import { changeState, deleteData, getAllData } from "@/actions";
 import { useEffect, useState } from "react";
 import { useToast } from "./ui/use-toast";
 
@@ -27,7 +27,7 @@ export default function DashboardDataTable() {
     setLoading(false);
   }
   function detectDeviceType(userAgent) {
-    const mobileRegex = /Mobi|Android|iPhone|iPad|iPod/;
+    const mobileRegex = /Mobile|Android|iPhone|iPad|iPod/;
     const tabletRegex = /Tablet|iPad/;
     const desktopRegex = /Windows NT|Linux|X11|Macintosh|Mac OS X/;
     if (tabletRegex.test(userAgent)) {
@@ -189,6 +189,22 @@ export default function DashboardDataTable() {
                         className="bg-green-600 rounded-3xl py-1 px-3"
                       >
                         Done
+                      </button>
+                      <button
+                        onClick={async () => {
+                          setPending({
+                            state: true,
+                            index: index,
+                          });
+                          await deleteData(item._id, "done");
+                          await getData();
+                          setPending({
+                            state: false,
+                          });
+                        }}
+                        className="bg-red-600 rounded-3xl py-1 px-3"
+                      >
+                        Delete
                       </button>
                     </>
                   )}
