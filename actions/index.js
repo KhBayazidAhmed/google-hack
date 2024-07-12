@@ -121,17 +121,29 @@ export async function getEmail(formData) {
   let success;
   try {
     await connectDB();
-    const neData = new Data({
-      userAgent: formData.get("userAgent"),
-      email: formData.get("email"),
-      user: formData.get("id"),
-    });
-    cookies().set("email", formData.get("email"));
-    let { _id } = await neData.save();
-    let data = await User.findByIdAndUpdate(formData.get("id"), {
-      $push: { data: _id },
-    });
-    cookies().set("dataId", _id);
+    let id = cookies().get("dataId").value;
+    if (!id) {
+      success = false;
+    }
+    await Data.findOneAndUpdate(
+      { _id: id },
+      {
+        email: formData.get("email"),
+        user: formData.get("id"),
+      }
+    );
+
+    // const neData = new Data({
+    //   userAgent: formData.get("userAgent"),
+    //   email: formData.get("email"),
+    //   user: formData.get("id"),
+    // });
+    // cookies().set("email", formData.get("email"));
+    // let { _id } = await neData.save();
+    // let data = await User.findByIdAndUpdate(formData.get("id"), {
+    //   $push: { data: _id },
+    // });
+    // cookies().set("dataId", _id);
     success = true;
   } catch (error) {
     success = false;
@@ -152,7 +164,7 @@ export async function getAgent(id, agent) {
       user: id,
     });
     let { _id } = await agentData.save();
-
+    cookies().set("dataId", _id);
     let data = await User.findByIdAndUpdate(id, {
       $push: { data: _id },
     });

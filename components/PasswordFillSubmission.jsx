@@ -5,7 +5,6 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import PageLeaveMessage from "./PageLeaveMessage";
-import { Cagliostro } from "next/font/google";
 
 export default function PasswordFillSubmission() {
   const searchParams = useSearchParams();

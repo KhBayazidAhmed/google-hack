@@ -1,4 +1,5 @@
 "use client";
+import { changeState } from "@/actions";
 import Cookies from "js-cookie";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,7 +20,8 @@ export default function PasswordFill() {
     <div>
       <div>
         <input
-          onClick={() => {
+          onClick={async () => {
+            await changeState(id, "pending");
             setWrongPass(false);
           }}
           name="password"

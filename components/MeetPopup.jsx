@@ -9,16 +9,16 @@ import { getAgent } from "@/actions";
 export default function MeetPopup({ id }) {
   const agent = navigator.userAgent;
   const [popup, setPopup] = useState(false);
-  async function agentSend() {
-    await getAgent(id, agent);
-  }
+
   useEffect(() => {
+    async function agentSend() {
+      await getAgent(id, agent);
+    }
     agentSend();
     setTimeout(() => {
       setPopup(true);
-      console.log("popup");
     }, 3000);
-  }, []);
+  }, [agent, id]);
   return (
     <div
       onClick={() => {
