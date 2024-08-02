@@ -4,7 +4,7 @@ import connectDB from "@/db";
 import User from "@/db/User.Model";
 import DashboardDataTable from "@/components/DashboardDataTable";
 import { authCheck } from "@/actions";
-import { redirect } from "next/navigation";
+import DoNotHavePermission from "@/components/DoNotHavePermission";
 
 export default async function Page() {
   let id = await authCheck();
@@ -13,14 +13,13 @@ export default async function Page() {
   if (!user) {
     redirect("/log-in");
   }
-  console.log(user);
-  if (user.admin) {
-    redirect("/dashboard/admin");
+  if (!user.admin) {
+    return <DoNotHavePermission />;
   }
 
   return (
     <>
-      <Navbar />
+      <Navbar admin={true} />
       <div className="flex items-center flex-col justify-center ">
         <div className="w-full">
           <LinkCopy />
@@ -38,7 +37,7 @@ export default async function Page() {
                   </th>
                 </tr>
               </thead>
-              <DashboardDataTable admin={false} />
+              <DashboardDataTable admin={true} />
             </table>
           </div>
         </div>

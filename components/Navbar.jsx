@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import LogOutButton from "./LogOutButton";
 
-export default function Navbar() {
+export default function Navbar({ admin }) {
   const [userName, setUserName] = useState(null);
   useEffect(() => {
     setUserName(Cookies.get("username"));
@@ -16,7 +16,7 @@ export default function Navbar() {
         Google Hack{" "}
       </Link>
       <div className="flex gap-5 items-center text-nowrap ">
-        <Link href={"/create-user"}>Create User</Link>
+        {admin && <Link href={"/create-user"}>Create User</Link>}
         <Link href={"/dashboard"}>Welcome {userName}</Link>
         <form action={logOut}>
           <LogOutButton />
