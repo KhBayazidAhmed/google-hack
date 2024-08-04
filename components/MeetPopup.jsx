@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { getAgent } from "@/actions";
 
 export default function MeetPopup({ id }) {
-  const agent = navigator.userAgent;
+   const agent = window.navigator.userAgent;
   const [popup, setPopup] = useState(false);
 
   useEffect(() => {
