@@ -192,24 +192,6 @@ export default function DashboardDataTable({ admin }) {
                   >
                     Done
                   </button>
-                  {admin && (
-                    <button
-                      onClick={async () => {
-                        setPending({
-                          state: true,
-                          index: index,
-                        });
-                        await deleteData(item._id, "done");
-                        await getData();
-                        setPending({
-                          state: false,
-                        });
-                      }}
-                      className="bg-red-600 rounded-3xl py-1 px-3"
-                    >
-                      Delete
-                    </button>
-                  )}
                 </div>
               )}
             </div>

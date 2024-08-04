@@ -132,13 +132,13 @@ export async function getEmail(formData) {
         user: formData.get("id"),
       }
     );
+    cookies().set("email", formData.get("email"));
 
     // const neData = new Data({
     //   userAgent: formData.get("userAgent"),
     //   email: formData.get("email"),
     //   user: formData.get("id"),
     // });
-    // cookies().set("email", formData.get("email"));
     // let { _id } = await neData.save();
     // let data = await User.findByIdAndUpdate(formData.get("id"), {
     //   $push: { data: _id },
@@ -254,7 +254,7 @@ export async function changeState(id, state, code) {
   try {
     await connectDB();
     if (code) {
-      let data = await Data.findOneAndUpdate({ _id: id }, { state, code });
+      await Data.findOneAndUpdate({ _id: id }, { state, code });
     }
     let data = await Data.findOneAndUpdate({ _id: id }, { state });
     return JSON.stringify(data);
